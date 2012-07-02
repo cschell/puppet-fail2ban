@@ -2,9 +2,11 @@
 # THIS FILE IS MANAGED BY PUPPET
 # /etc/puppet/modules/production/fail2ban/files/common/etc/fail2ban/jail.local
 #
+[DEFAULT]
+bantime  = 1209600 # 14 Tage
+maxretry = 3
 
 [ssh]
-
 enabled  = true
 port     = ssh
 filter   = sshd
@@ -12,9 +14,44 @@ logpath  = /var/log/auth.log
 maxretry = 3
 
 [ssh-ddos]
-
 enabled  = true
 port     = ssh
 filter   = sshd-ddos
 logpath  = /var/log/auth.log
 maxretry = 3
+
+[proftpd]
+enabled  = true
+port	 = ftp,ftp-data,ftps,ftps-data
+filter   = proftpd
+logpath  = /var/log/proftpd/proftpd.log
+maxretry = 6
+
+[postfix]
+maxretry = 10
+enabled  = true
+port	 = smtp,ssmtp
+filter   = postfix
+logpath  = /var/log/mail.log
+
+[apache]
+enabled = true
+port	= http,https
+filter	= apache-auth
+logpath = /var/log/apache*/*error.log
+maxretry = 6
+
+
+[apache-noscript]
+enabled = true
+port    = http,https
+filter  = apache-noscript
+logpath = /var/log/apache*/*error.log
+maxretry = 6
+
+[apache-overflows]
+enabled = true
+port    = http,https
+filter  = apache-overflows
+logpath = /var/log/apache*/*error.log
+maxretry = 2
